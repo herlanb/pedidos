@@ -30,8 +30,7 @@ class ClientRepository:
         )
         self._session.add(model)
 
-        self._session.flush()  # detecta errores de integridad ya; no hace commit
-
+        self._session.flush()  
         return client
 
     def get(self, client_id: UUID) -> Client | None:

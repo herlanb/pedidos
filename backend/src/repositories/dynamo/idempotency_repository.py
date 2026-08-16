@@ -35,10 +35,21 @@ class IdempotencyRepository:
             if exc.response["Error"]["Code"] == "ConditionalCheckFailedException":
                 raise DuplicateIdempotencyKeyError(record.idempotency_key) from exc
             raise
+
+    def release(self, idempotency_key: str) -> None:
+        self._table.delete_item(
+            Key={
+                "PK": f"IDEMP#{idempotency_key}", 
+                "SK": IdempotencyRecord.SK_VALUE
+            }
+        )
     
     def get(self, idempotency_key: str) -> IdempotencyRecord | None:
         resp = self._table.get_item(
-            Key={"PK": f"IDEMP#{idempotency_key}", "SK": IdempotencyRecord.SK_VALUE}
+            Key={
+                "PK": f"IDEMP#{idempotency_key}", 
+                "SK": IdempotencyRecord.SK_VALUE
+            }
         )
 
         item = resp.get("Item")

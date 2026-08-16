@@ -23,7 +23,7 @@ class Client:
 
     def _validate(self) -> None:
         if not self.name or not self.name.strip():
-            raise InvalidClientError("name no puede estar vacío")
+            raise InvalidClientError("Name no puede estar vacío")
 
         if "@" not in self.email or "." not in self.email.split("@")[-1]:
-            raise InvalidClientError(f"email inválido: {self.email!r}")
+            raise InvalidClientError(f"Email inválido: {self.email!r}")
